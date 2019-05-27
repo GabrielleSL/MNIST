@@ -18,7 +18,6 @@ def main():
         temp_params = []
         # training
         for j in range(len(params[x])):
-            # print("here")
             sum_num = 0
             for i in range(3000):#len(train_set[0])):
                 if train_set[1][i] == var[x]:

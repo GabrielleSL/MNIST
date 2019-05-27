@@ -1,31 +1,33 @@
 import gzip
 import pickle as pkl
 import numpy as np
-# import matplotlib.cm as cm
-# import matplotlib.pyplot as plt
 
-var = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+var = np.arange(10)
 
 def main():
     
     train_set, test_set = getDataSets()
 
     # thetas 0 to 784
-    params = [np.zeros(785), np.zeros(785), np.zeros(785), np.zeros(785), np.zeros(785), np.zeros(785), np.zeros(785), np.zeros(785), np.zeros(785), np.zeros(785)]
-
+    params = [[0]*785]*10
+    
+    print(len(var))
     alpha = 0.00001
     for x in range(len(var)):
         temp_params = []
-        # training
-        for j in range(1000):#len(params[x])):
+        # training with logistic regression gradient descent
+        for j in range(len(params[x])): #loops over all paramaters 
             sum_num = 0
-            for i in range(len(train_set[0])):
+            for i in range(1000):#len(train_set[0])): loops over training set, sum part of function
                 if train_set[1][i] == var[x]:
                     k = 1
                 else:
                     k = 0
                 sum_num += (hyp(train_set[0][i], params[x]) - k) * train_set[0][i][j]
+                #Simultaneously update all of the paramaters
             temp_params.append(params[x][j] - alpha * sum_num) 
+        
+        #take one step in gradient descent to update paramaters
         
         # update
         for j in range(len(params[x])):
@@ -40,14 +42,14 @@ def getDataSets():
         set1, set2, set3 = pkl.load(f)
         f.close()
 
-    # sort out the 0s and 1s of set1
+    #append column of 1's to training set
     train_set = [[],[]]
     for x in range(len(set1[1])):
         if(set1[1][x] in var):
             train_set[0].append(np.insert(set1[0][x], 0, 1))
             train_set[1].append(set1[1][x])
 
-    # sort out the 0s and 1s of set3
+    #append column of 1's to test set
     test_set = [[],[]]
     for x in range(len(set3[1])):
         if(set3[1][x] in var):
